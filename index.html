@@ -4,172 +4,822 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>The Coomer Coin — $COM</title>
-
+    <title>Coomer - Meme Coin</title>
     <style>
         :root {
-            --bg: #0d0d0d;
-            --box: #161616;
-            --border: #2a2a2a;
-            --text: #f2f2f2;
-            --muted: #888;
+            --bg: #120d0a;
+            --bg-soft: #1d1511;
+            --panel: rgba(27, 19, 14, 0.88);
+            --panel-strong: #251a13;
+            --line: rgba(255, 213, 164, 0.14);
+            --text: #f9ecd9;
+            --muted: #c0a894;
+            --accent: #ff9b54;
+            --accent-2: #ffd166;
+            --accent-3: #ff6b6b;
+            --good: #9be38b;
+            --shadow: 0 24px 60px rgba(0, 0, 0, 0.35);
         }
 
         * {
             box-sizing: border-box;
         }
 
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             margin: 0;
-            background: var(--bg);
+            min-height: 100vh;
             color: var(--text);
-            font-family: "Courier New", Courier, monospace;
+            font-family: Georgia, "Times New Roman", serif;
             line-height: 1.6;
+            background:
+                radial-gradient(circle at top left, rgba(255, 155, 84, 0.15), transparent 28%),
+                radial-gradient(circle at 80% 20%, rgba(255, 209, 102, 0.12), transparent 24%),
+                linear-gradient(180deg, #1b130f 0%, #120d0a 45%, #0e0a08 100%);
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 28px 28px;
+            opacity: 0.25;
+            pointer-events: none;
+        }
+
+        a {
+            color: inherit;
         }
 
         .container {
-            max-width: 900px;
-            margin: 60px auto;
-            padding: 0 20px;
-            text-align: center;
+            width: min(1180px, calc(100% - 32px));
+            margin: 0 auto;
+            padding: 32px 0 60px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 28px;
+            padding: 14px 18px;
+            border: 1px solid var(--line);
+            background: rgba(20, 14, 11, 0.7);
+            backdrop-filter: blur(14px);
+            box-shadow: var(--shadow);
+        }
+
+        .eyebrow,
+        .mini-label,
+        .section-kicker,
+        .table-label,
+        .footer {
+            font-family: "Courier New", Courier, monospace;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+        }
+
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 13px;
+            color: var(--muted);
+        }
+
+        .brand-dot {
+            width: 11px;
+            height: 11px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent-2));
+            box-shadow: 0 0 18px rgba(255, 155, 84, 0.55);
+        }
+
+        .status {
+            padding: 7px 12px;
+            border: 1px solid rgba(255, 155, 84, 0.35);
+            color: var(--accent-2);
+            font-size: 12px;
+        }
+
+        .hero {
+            display: grid;
+            grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.9fr);
+            gap: 26px;
+            align-items: stretch;
+            margin-bottom: 26px;
+        }
+
+        .hero-copy,
+        .hero-card,
+        .panel {
+            border: 1px solid var(--line);
+            background: var(--panel);
+            box-shadow: var(--shadow);
+        }
+
+        .hero-copy {
+            padding: 34px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-copy::after {
+            content: "";
+            position: absolute;
+            inset: auto -5% -30% 45%;
+            height: 240px;
+            background: radial-gradient(circle, rgba(255, 155, 84, 0.24), transparent 68%);
+            pointer-events: none;
+        }
+
+        .eyebrow {
+            font-size: 12px;
+            color: var(--accent-2);
+            margin-bottom: 14px;
         }
 
         h1 {
-            font-size: 44px;
-            margin-bottom: 5px;
-            letter-spacing: 1px;
+            margin: 0;
+            font-size: clamp(52px, 10vw, 108px);
+            line-height: 0.92;
+            letter-spacing: -0.04em;
+            text-transform: uppercase;
         }
 
-        .subtitle {
-            font-size: 14px;
+        .lede {
+            max-width: 58ch;
+            margin: 18px 0 0;
+            color: #f4dcc6;
+            font-size: 18px;
+        }
+
+        .hero-points {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+            margin-top: 28px;
+        }
+
+        .point {
+            padding: 16px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        .point strong {
+            display: block;
+            margin-bottom: 8px;
+            font-size: 13px;
+            color: var(--accent-2);
+            font-family: "Courier New", Courier, monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .point span {
+            display: block;
             color: var(--muted);
-            margin-bottom: 40px;
-        }
-
-        .hero img {
-            width: 260px;
-            max-width: 100%;
-            margin-bottom: 40px;
-            border-radius: 100px;
-        }
-
-        .box {
-            background: var(--box);
-            border: 2px solid var(--border);
-            padding: 30px;
-            margin: 40px 0;
-            text-align: left;
-        }
-
-        .box h3 {
-            margin-top: 0;
             font-size: 14px;
-            color: var(--muted);
-            letter-spacing: 1px;
+            line-height: 1.45;
         }
 
-        .buttons {
-            margin: 40px 0;
+        .actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 28px;
         }
 
         .btn {
-            display: inline-block;
-            padding: 14px 26px;
-            margin: 0 10px;
-            border: 2px solid var(--text);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 48px;
+            padding: 0 20px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
             text-decoration: none;
-            color: var(--text);
-            font-size: 16px;
-            transition: 0.2s ease;
+            font-family: "Courier New", Courier, monospace;
+            font-size: 14px;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
         }
 
         .btn:hover {
-            background: var(--text);
-            color: #000;
+            transform: translateY(-2px);
+            border-color: rgba(255, 209, 102, 0.42);
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--accent), #ff7f50);
+            color: #160d09;
+            border-color: transparent;
+        }
+
+        .btn-secondary {
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .hero-card {
+            padding: 18px;
+            display: grid;
+            grid-template-rows: auto auto 1fr;
+            gap: 16px;
+        }
+
+        .hero-card img {
+            width: 100%;
+            aspect-ratio: 1 / 1;
+            object-fit: cover;
+            border: 1px solid var(--line);
+            filter: saturate(1.02) contrast(1.04);
+        }
+
+        .mini-label {
+            font-size: 12px;
+            color: var(--muted);
+        }
+
+        .signal-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .signal {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 11px 12px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 14px;
+        }
+
+        .signal span:last-child {
+            color: var(--accent-2);
+        }
+
+        .section-grid {
+            display: grid;
+            grid-template-columns: 1.2fr 0.8fr;
+            gap: 26px;
+            margin-bottom: 26px;
+        }
+
+        .panel {
+            padding: 28px;
+        }
+
+        .section-kicker {
+            font-size: 12px;
+            color: var(--accent-2);
+            margin-bottom: 8px;
+        }
+
+        h2 {
+            margin: 0 0 10px;
+            font-size: clamp(28px, 4vw, 44px);
+            line-height: 1;
+        }
+
+        .section-copy {
+            color: var(--muted);
+            margin: 0 0 20px;
+        }
+
+        .chart-shell {
+            padding: 18px 18px 14px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background:
+                linear-gradient(180deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+                repeating-linear-gradient(to top, transparent, transparent 55px, rgba(255, 255, 255, 0.05) 56px);
+        }
+
+        .chart {
+            position: relative;
+            height: 290px;
+            border-left: 1px solid rgba(255, 255, 255, 0.12);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            overflow: hidden;
+        }
+
+        .curve {
+            position: absolute;
+            inset: 0;
+        }
+
+        .curve svg {
+            width: 100%;
+            height: 100%;
+        }
+
+        .curve path {
+            fill: none;
+            stroke: var(--accent);
+            stroke-width: 4;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            filter: drop-shadow(0 0 10px rgba(255, 155, 84, 0.3));
+        }
+
+        .axis-labels {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 12px;
+            color: var(--muted);
+            font-size: 12px;
+            font-family: "Courier New", Courier, monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .marker {
+            position: absolute;
+            max-width: 130px;
+            font-size: 12px;
+            line-height: 1.35;
+            color: #f4dcc6;
+        }
+
+        .marker::before {
+            content: "";
+            position: absolute;
+            left: -11px;
+            top: 6px;
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent-2);
+            box-shadow: 0 0 0 4px rgba(255, 209, 102, 0.08);
+        }
+
+        .marker-1 {
+            left: 10%;
+            top: 68%;
+        }
+
+        .marker-2 {
+            left: 31%;
+            top: 30%;
+        }
+
+        .marker-3 {
+            left: 52%;
+            top: 74%;
+        }
+
+        .marker-4 {
+            left: 71%;
+            top: 12%;
+        }
+
+        .marker-5 {
+            right: 2%;
+            top: 57%;
+        }
+
+        .stack {
+            display: grid;
+            gap: 18px;
+        }
+
+        .mood-meter {
+            display: grid;
+            gap: 12px;
+        }
+
+        .meter-row {
+            display: grid;
+            grid-template-columns: 120px 1fr 46px;
+            gap: 12px;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .meter-track {
+            height: 10px;
+            background: rgba(255, 255, 255, 0.06);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .meter-fill {
+            position: absolute;
+            inset: 0 auto 0 0;
+            background: linear-gradient(90deg, var(--accent-3), var(--accent), var(--accent-2));
+        }
+
+        .quote {
+            padding: 18px;
+            border-left: 3px solid var(--accent);
+            background: rgba(255, 255, 255, 0.03);
+            color: #f4dcc6;
+            font-size: 17px;
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 720px;
+        }
+
+        th,
+        td {
+            padding: 16px 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            color: var(--accent-2);
+            font-size: 12px;
+            font-family: "Courier New", Courier, monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        td {
+            color: #f2dcc8;
+            font-size: 15px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 9px;
+            background: rgba(255, 209, 102, 0.1);
+            border: 1px solid rgba(255, 209, 102, 0.2);
+            color: var(--accent-2);
+            font-size: 11px;
+            font-family: "Courier New", Courier, monospace;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
+        .culture-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 18px;
+        }
+
+        .culture-card {
+            padding: 22px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(255, 255, 255, 0.03);
+        }
+
+        .culture-card h3 {
+            margin: 0 0 10px;
+            font-size: 20px;
+        }
+
+        .culture-card p {
+            margin: 0;
+            color: var(--muted);
+        }
+
+        .summary-band {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 26px;
+            margin-top: 26px;
+        }
+
+        .summary-copy {
+            font-size: 18px;
+            color: #f5ddc7;
+        }
+
+        .disclaimer {
+            border: 1px solid rgba(255, 107, 107, 0.2);
+            background: rgba(255, 107, 107, 0.05);
         }
 
         .footer {
-            font-size: 13px;
+            margin-top: 26px;
+            padding: 18px 0 0;
             color: var(--muted);
-            margin-top: 60px;
+            font-size: 12px;
+            text-align: center;
+        }
+
+        @media (max-width: 980px) {
+
+            .hero,
+            .section-grid,
+            .summary-band,
+            .culture-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .hero-points {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                width: min(100% - 20px, 1180px);
+                padding-top: 18px;
+            }
+
+            .topbar {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hero-copy,
+            .hero-card,
+            .panel {
+                padding: 20px;
+            }
+
+            .meter-row {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            h1 {
+                font-size: clamp(46px, 18vw, 78px);
+            }
+
+            .lede,
+            .summary-copy {
+                font-size: 17px;
+            }
         }
     </style>
 </head>
 
 <body>
-
     <div class="container">
-
-        <h1>COOMER - $COM</h1>
-        <div class="subtitle">Meme Coin — Terminally Online Edition</div>
-
-        <div class="hero">
-            <!-- Replace with your image -->
-            <img src="logo.jpg" alt="Coomer Coin">
+        <div class="topbar">
+            <div class="brand">
+                <span class="brand-dot"></span>
+                <span>COOMER / terminally online market participant / satire asset</span>
+            </div>
+            <div class="status">CA: dsadsadsd</div>
         </div>
 
-        <div class="box">
-            <p>
-                Coomer is a satire-driven meme coin inspired by the archetype of the
-                endlessly scrolling, dopamine-chasing internet dweller.
+        <section class="hero">
+            <div class="hero-copy">
+                <div class="eyebrow">Meme Coin - Terminally Online Edition</div>
+                <h1>COOMER</h1>
+                <p class="lede">
+                    Coomer is a satire-driven meme coin built around the endlessly scrolling,
+                    dopamine-chasing internet dweller. Not a productivity fantasy. Not a clean alpha myth.
+                    Just the full loop: hype, regret, refresh, repeat.
+                </p>
+
+                <div class="hero-points">
+                    <div class="point">
+                        <strong>Attention</strong>
+                        <span>Headlines hit first. Conviction comes later. Usually too late.</span>
+                    </div>
+                    <div class="point">
+                        <strong>Impulse</strong>
+                        <span>Feeds move on emotion, and crypto learned to price that in.</span>
+                    </div>
+                    <div class="point">
+                        <strong>Self-awareness</strong>
+                        <span>The joke lands because everybody recognizes the behavior.</span>
+                    </div>
+                </div>
+
+                <div class="actions">
+                    <a href="#" class="btn btn-primary">Buy COOM</a>
+                    <a href="#" class="btn btn-secondary">Twitter</a>
+                </div>
+            </div>
+
+            <aside class="hero-card">
+                <div class="mini-label">Portrait / market mascot / overstimulated icon</div>
+                <img src="logo.jpg" alt="Coomer Coin">
+                <div class="signal-list">
+                    <div class="signal">
+                        <span>Tabs Open</span>
+                        <span>23</span>
+                    </div>
+                    <div class="signal">
+                        <span>Sleep Quality</span>
+                        <span>questionable</span>
+                    </div>
+                    <div class="signal">
+                        <span>Timeline Refresh Rate</span>
+                        <span>every 8 sec</span>
+                    </div>
+                    <div class="signal">
+                        <span>Portfolio Mood</span>
+                        <span>fragile</span>
+                    </div>
+                </div>
+            </aside>
+        </section>
+
+        <section class="section-grid">
+            <div class="panel">
+                <div class="section-kicker">Graph</div>
+                <h2>The Coomer Cycle</h2>
+                <p class="section-copy">
+                    A simplified emotional chart of the terminally online trader.
+                    Every spike starts with narrative. Every crash ends with another tab opened.
+                </p>
+
+                <div class="chart-shell">
+                    <div class="chart">
+                        <div class="curve">
+                            <svg viewBox="0 0 1000 290" preserveAspectRatio="none" aria-hidden="true">
+                                <path
+                                    d="M0,238 C70,220 120,210 190,145 C250,92 325,42 390,164 C445,262 520,238 590,112 C655,0 740,8 805,105 C868,199 934,190 1000,146">
+                                </path>
+                            </svg>
+                        </div>
+                        <div class="marker marker-1"><strong>Scroll</strong><br>ambient boredom</div>
+                        <div class="marker marker-2"><strong>Hope</strong><br>new narrative</div>
+                        <div class="marker marker-3"><strong>Regret</strong><br>bought the candle</div>
+                        <div class="marker marker-4"><strong>Delusion</strong><br>posting through it</div>
+                        <div class="marker marker-5"><strong>Reset</strong><br>back to the feed</div>
+                    </div>
+                    <div class="axis-labels">
+                        <span>Time spent online</span>
+                        <span>Dopamine / conviction / cope</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="stack">
+                <div class="panel">
+                    <div class="section-kicker">State Meter</div>
+                    <h2>Daily Readings</h2>
+                    <div class="mood-meter">
+                        <div class="meter-row">
+                            <span>Screen glow</span>
+                            <div class="meter-track">
+                                <div class="meter-fill" style="width: 94%"></div>
+                            </div>
+                            <span>94%</span>
+                        </div>
+                        <div class="meter-row">
+                            <span>Conviction</span>
+                            <div class="meter-track">
+                                <div class="meter-fill" style="width: 61%"></div>
+                            </div>
+                            <span>61%</span>
+                        </div>
+                        <div class="meter-row">
+                            <span>Sleep debt</span>
+                            <div class="meter-track">
+                                <div class="meter-fill" style="width: 88%"></div>
+                            </div>
+                            <span>88%</span>
+                        </div>
+                        <div class="meter-row">
+                            <span>Exit timing</span>
+                            <div class="meter-track">
+                                <div class="meter-fill" style="width: 17%"></div>
+                            </div>
+                            <span>17%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel quote">
+                    "The scroll never sleeps. Neither does the need to check if the candle came back."
+                </div>
+            </div>
+        </section>
+
+        <section class="panel">
+            <div class="section-kicker">Table</div>
+            <h2>Coomer Lifestyle Index</h2>
+            <p class="section-copy">
+                Same archetype, different moments. The lifestyle is a loop of overconsumption,
+                overstimulation, and very online self-recognition.
             </p>
 
-            <p>
-                In a world overloaded with content, headlines, conflict narratives,
-                and algorithmic stimulation, attention has become the most traded asset.
-                Markets move on emotion. Feeds move on impulse.
-            </p>
+            <div class="table-wrap">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Window</th>
+                            <th>Observed behavior</th>
+                            <th>Internal monologue</th>
+                            <th>Market translation</th>
+                            <th>Severity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>08:10</td>
+                            <td>Wake up directly into notifications, charts, and bad takes.</td>
+                            <td>"Maybe overnight changed everything."</td>
+                            <td>First emotional read of the day sets the tone.</td>
+                            <td><span class="badge">Elevated</span></td>
+                        </tr>
+                        <tr>
+                            <td>12:40</td>
+                            <td>Consumes discourse faster than information can be processed.</td>
+                            <td>"I am researching."</td>
+                            <td>Narrative replaces thesis.</td>
+                            <td><span class="badge">High</span></td>
+                        </tr>
+                        <tr>
+                            <td>16:20</td>
+                            <td>Impulse enters after seeing one too many victory posts.</td>
+                            <td>"This one still has room."</td>
+                            <td>Buys local excitement, calls it timing.</td>
+                            <td><span class="badge">Critical</span></td>
+                        </tr>
+                        <tr>
+                            <td>21:50</td>
+                            <td>Retreats into memes when conviction collides with volatility.</td>
+                            <td>"It was always about the culture."</td>
+                            <td>Loss gets reframed as participation.</td>
+                            <td><span class="badge">Maximum</span></td>
+                        </tr>
+                        <tr>
+                            <td>02:14</td>
+                            <td>Opens one last tab. Opens six more.</td>
+                            <td>"Tomorrow I log off."</td>
+                            <td>Cycle resets before sleep begins.</td>
+                            <td><span class="badge">Permanent</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
 
-            <p>
-                Coomer represents peak digital excess — the cycle of hype, regret,
-                refresh, repeat. A character shaped by the timeline itself.
-            </p>
+        <section class="panel" style="margin-top: 26px;">
+            <div class="section-kicker">Culture Notes</div>
+            <h2>Why The Character Lands</h2>
+            <div class="culture-grid">
+                <article class="culture-card">
+                    <h3>Headline Fatigue</h3>
+                    <p>
+                        As global events dominate discourse, online communities retreat into humor,
+                        irony, and exaggerated personas. Coomer reflects the overstimulated state that follows.
+                    </p>
+                </article>
+                <article class="culture-card">
+                    <h3>Attention Economy Spiral</h3>
+                    <p>
+                        Constant content consumption changes online behavior. Crypto mirrors the same pattern:
+                        pump, panic, distraction, repeat.
+                    </p>
+                </article>
+                <article class="culture-card">
+                    <h3>Meme As Mirror</h3>
+                    <p>
+                        Coomer is less a role model than a confession. The figure works because it captures
+                        self-awareness inside the feed instead of outside it.
+                    </p>
+                </article>
+            </div>
 
-            <p><strong>The scroll never sleeps.</strong></p>
-            <p><strong>CA: HkjPwyuqnrTZFSQLsRoPArLm518yo1gEggpeBHBhpump</strong></p>
-        </div>
+            <div class="summary-band">
+                <div class="panel" style="padding: 24px;">
+                    <div class="table-label">Summary</div>
+                    <p class="summary-copy">
+                        Coomer is not about discipline, productivity, or a clean route to enlightenment.
+                        It is about self-awareness in the age of infinite scroll: a meme reflecting the
+                        overstimulated market participant in full view.
+                    </p>
+                </div>
 
-        <div class="buttons">
-            <a href="pump.fun" class="btn">[ Buy COM ]</a>
-            <a href="https://x.com/TheCoomerCoin" class="btn">[ Twitter ]</a>
-        </div>
+                <div class="panel disclaimer" style="padding: 24px;">
+                    <div class="table-label">Disclaimer</div>
+                    <p class="summary-copy" style="font-size: 17px;">
+                        Coomer is a meme token created for satire and entertainment.
+                        Cryptocurrency markets are volatile and speculative.
+                        Nothing on this page is financial advice.
+                    </p>
+                </div>
+            </div>
+        </section>
 
-        <div class="box">
-            <h3>— CULTURE NOTES —</h3>
-
-            <p><strong>Headline Fatigue & Meme Escapism</strong><br>
-                As global events dominate discourse, online communities increasingly
-                retreat into humor and exaggerated personas. The Coomer character
-                reflects that overstimulated digital state.</p>
-
-            <p><strong>Attention Economy Spiral</strong><br>
-                Studies suggest constant content consumption reshapes online behavior.
-                In crypto, the same cycle appears: pump, panic, distraction, repeat.</p>
-
-            <hr style="margin:30px 0; border:none; border-top:1px solid var(--border);">
-
-            <p>
-                <strong>Summary:</strong> Coomer is not about productivity or discipline.
-                It is about self-awareness in the age of infinite scroll.
-                A meme reflecting the overstimulated market participant.
-            </p>
-        </div>
-
-        <div class="box">
-            <h3>— DISCLAIMER —</h3>
-            <p>
-                Coomer is a meme token created for satire and entertainment.
-                Cryptocurrency markets are volatile and speculative.
-                Nothing on this page is financial advice.
-            </p>
-        </div>
-
-        <div class="footer">
-            © 2026 Coomer
-        </div>
-
+        <div class="footer">Copyright 2026 Coomer</div>
     </div>
-
 </body>
 
 </html>
